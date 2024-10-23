@@ -1,7 +1,5 @@
-
 use anyhow::Result;
 use reqwest::Url;
-
 
 pub mod api;
 
@@ -20,7 +18,7 @@ impl LNbitsRustClient {
         lnbits_url: &str,
         invoice_read_key: &str,
         admin_key: &str,
-        tor_socket: Option<&str>
+        tor_socket: Option<&str>,
     ) -> Result<LNbitsRustClient> {
         let lnbits_url = Url::parse(lnbits_url)?;
 
@@ -42,7 +40,6 @@ impl LNbitsRustClient {
         })
     }
 }
-
 
 // pub fn add(left: u64, right: u64) -> u64 {
 //     left + right
