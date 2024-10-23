@@ -1,0 +1,17 @@
+[package]
+name = "LNbitsRustClient"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+axum = "0.6.20"
+reqwest = { version = "0.12", default-features = false, features = ["json",
+    "rustls-tls",
+    "rustls-tls-native-roots",
+    "socks"]}
+tokio = { version = "1", default-features = false }
+serde_json = { version = "1", default-features = false, features = ["std"] }
+serde = { version = "1", default-features = false, features = ["derive"] }
+url = "2.3"
+log = "0.4"
