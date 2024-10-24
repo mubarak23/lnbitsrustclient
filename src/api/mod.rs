@@ -58,7 +58,7 @@ impl crate::LNbitsRustClient {
         if response.status() == reqwest::StatusCode::NOT_FOUND {
             bail!("not found")
         }
-        
+
         let response_body = response.text().await?;
 
         Ok(response_body)
