@@ -151,3 +151,39 @@ impl crate::LNbitsRustClient {
       }
   }
 }
+
+// check if an invoice is paid
+pub async fn is_invoice_paid(
+   &self,
+   payment_hash: &str
+) -> Result<bool> {
+  let response_body = self.make_get(
+     LNBitsEndpoint::PaymentHash(payment_hash.to_string()),
+       crate::api::LNBitsRequestKey::Admin,
+  ).await?;
+
+  let result_invoice: serde_json::Value = serde_json::from_str(&response_body);
+  Ok(result_invoice["paid"].as_bool().unwrap_or(false))
+}
+
+/// find invoice details
+    pub async fn find_invoice(&self, checking_id: &str) -> Result<FindInvoiceResponse> {
+        let endpoint = LNBitsEndpoint::PaymentsFindInvoice(checking_id.to_string());
+
+        let body = self.make_get(endpoint, LNBitsRequestKey::Admin).await?;
+
+        match serde_json::from_str::<Vec<FindInvoiceResponse>>(&body) {
+            Ok(res) => {
+                let found = res.first().ok_or(anyhow!("Could not find invoice"))?;
+
+                Ok(found.to_owned())
+            }
+            Err(_) => {
+                log::error!("Api error response decode invoice");
+                log::error!("{}", body);
+                bail!("Could not decode invoice")
+            }
+        }
+    }
+
+}
