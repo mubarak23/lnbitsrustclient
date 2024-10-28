@@ -111,7 +111,7 @@ impl crate::LNbitsRustClient {
     }
   }
   // pay an invoice (only admin can pay for an invoice)
-  pub fn async pay_invoice(
+  pub async fn pay_invoice(
     &self,
     bolt11:: &str
   ) -> Result<PaymentInvoiceResponse> {
@@ -119,7 +119,7 @@ impl crate::LNbitsRustClient {
        LNBitsEndpoint::Payments,
        crate::api::LNBitsRequestKey::Admin,
       &serde_json::to_string(&serde_json::json!({ "out": true, "bolt11": bolt11 }))?,
-    ).await?
+    ).await?;
 
       match serde_json::from_str(&response_body) {
       Ok(res) => Ok(res),
@@ -130,5 +130,24 @@ impl crate::LNbitsRustClient {
       }
     }
 
+  }
+  // decode (pay) invoice
+  pub async fn decode_invoice(
+    &self,
+    invoice: &str
+  ) -> Result<DecodInvoiceResponse> {
+    let response_body = self.make_post(
+       LNBitsEndpoint::PaymentsDecode,
+       crate::api::LNBitsRequestKey::Admin,
+        &serde_json::to_string(&serde_json::json!({ "data": invoice}))?,
+    ).await?;
+
+       match serde_json::from_str(&response_body) {
+      Ok(res) => Ok(res),
+      Err(_) => {
+        log::error!("Api error response on paying invoice"),
+        log::error!("{}", response_body);
+        bail!("Fail to pay an invoice")
+      }
   }
 }
