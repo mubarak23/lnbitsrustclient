@@ -15,6 +15,7 @@ pub enum LnbitsEndpoints {
     Wallets,
     Payments,
     PaymentsDecode,
+    LNURL,
     Boltz,
     PaymentHash(String),
     PaymentsFindInvoice(String),
@@ -26,6 +27,7 @@ impl fmt::Display for LnbitsEndpoints {
             LnbitsEndpoints::Wallets => write!(f, "api/v1/wallet"),
             LnbitsEndpoints::Payments => write!(f, "api/v1/payments"),
             LnbitsEndpoints::PaymentsDecode => write!(f, "api/v1/payments/decode"),
+            LnbitsEndpoints::LNURL => write!(f, "api/v1/payment/lnurl"),
             LnbitsEndpoints::Boltz => write!(f, "api/v1/beltz"),
             LnbitsEndpoints::PaymentHash(hash) => write!(f, "api/v1/payments/{}", hash),
             LnbitsEndpoints::PaymentsFindInvoice(checking_id) => {
